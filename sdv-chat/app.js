@@ -1,6 +1,7 @@
 import path from 'path';
 import express from 'express';
 import { routerMessages } from './routers/messages.mjs';
+import { routerUsers } from './routers/users.mjs';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(
 );
 
 app.use('/message', routerMessages);
+app.use('/user', routerUsers);
 
 app.use((req, res) => {
     res.statusCode = 404;

@@ -23,6 +23,19 @@ body {
         padding: 0.5rem;
         height: 10rem;
     }
+
+    & .message {
+        display: flex;
+        gap: 0.2rem;
+
+        & .date {
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+        & .pseudo {
+            font-weight: bold;
+        }
+    }
 }
 
 .buttonsSection {
