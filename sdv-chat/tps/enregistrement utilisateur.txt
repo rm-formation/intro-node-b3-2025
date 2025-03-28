@@ -1,0 +1,7 @@
+- A l'arrivée sur site front, on demande nom d'utilisateur
+- On l'envois sur route /user/register
+- Si disponible, on retourne OK
+- Sinon, on retourne 401
+- Le front redemande un nom d'utilisateur
+- Ensuite, chaque message envoyé contient le nom utilisateur
+- Afficher l'utilisateur dans les messages affichés
