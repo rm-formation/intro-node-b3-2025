@@ -1,6 +1,9 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import { io } from '../app.js';
+import yup from 'yup';
+import { sanitize } from 'string-sanitizer/index.js'; 
 
 const saveFilePath = path.join(import.meta.dirname, '..', 'messagesSaveFile.json'); 
 
@@ -19,12 +22,38 @@ routerMessages.get('/clear', (req, res) => {
     res.send();
 });
 
-routerMessages.post('/send', (req, res) => {
-    // TODO input validation
-    tableauMessages.push(req.body);
+routerMessages.post('/send', async (req, res) => {
+    let message = req.body;
+    let valide = true;
+    try {
+        await messageSchema.validate(message);
+    } catch(e) {
+        valide = false;
+    }
+
+    if (!valide) {
+        res.statusCode = 400;
+        res.send();
+        return;
+    }
+
+    message = {
+        pseudo: sanitize(message.pseudo),
+        date: message.date,
+        message: message.message.replace(/[<>\/\\%]/g, '') //Exemple, à ne pas prendre tel quel !
+    }
+
+    tableauMessages.push(message);
     saveMessages();
+    io.emit('message', message);
     res.send('Message reçu');
 });
+
+const messageSchema = yup.object({
+    pseudo: yup.string().required(),
+    date: yup.date().required(),
+    message: yup.string().required()
+}).noUnknown();
 
 function saveMessages() {
     fs.writeFileSync(saveFilePath, JSON.stringify(tableauMessages), 'utf-8');

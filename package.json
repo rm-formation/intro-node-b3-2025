@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1",
+    "string-sanitizer": "^2.0.2",
+    "yup": "^1.6.1"
   }
 }
